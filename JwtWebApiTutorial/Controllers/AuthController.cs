@@ -71,21 +71,8 @@ namespace JwtWebApiTutorial.Controllers
                 new Claim(ClaimTypes.Role, "Admin")
             };
 
-            //var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-            //    _configuration.GetSection("AppSettings:Token").Value));
-
-            // Get the AppSettings:Token value
-            string appSettingsToken = _configuration.GetSection("AppSettings:Token").Value;
-
-            // Hash the token value using SHA-512
-            byte[] hashedTokenBytes;
-            using (var sha512 = SHA512.Create())
-            {
-                hashedTokenBytes = sha512.ComputeHash(System.Text.Encoding.UTF8.GetBytes(appSettingsToken));
-            }
-
-            // Use the hashed token bytes to create a SymmetricSecurityKey
-            var key = new SymmetricSecurityKey(hashedTokenBytes);
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
